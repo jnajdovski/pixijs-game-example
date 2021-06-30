@@ -1,27 +1,30 @@
-import { Application } from '@pixi/app'
-import { Renderer } from '@pixi/core'
-import { BatchRenderer } from '@pixi/core' 
-import { Sprite } from '@pixi/sprite'
-import { TickerPlugin } from '@pixi/ticker'
-import { AppLoaderPlugin } from '@pixi/loaders'
 
-Renderer.registerPlugin('batch', BatchRenderer)
-Application.registerPlugin(TickerPlugin)
-Application.registerPlugin(AppLoaderPlugin)
+import * as PIXI from 'pixi.js'
+import { SceneManager } from 'pixi-scenes'
+import Boot from './scenes/Boot'
+import Menu from './scenes/Menu'
+import Game from './scenes/Game'
+import Score from './scenes/Score'
 
-const app = new Application({ resizeTo: window })
+const app = new PIXI.Application({ resizeTo: window })
 document.body.appendChild(app.view)
 
-app.loader.add('logo', './assets/logo.png')
+const scene = new SceneManager(app)
+scene.add('boot', new Boot())
+scene.add('menu', new Menu())
+scene.add('game', new Game())
+scene.add('score', new Score())
+
+app.loader.add('background', './assets/background.jpg')
 app.loader.load(() => {
-	const sprite = Sprite.from('logo')
+	const sprite = PIXI.Sprite.from('background')
 	sprite.anchor.set(0.5) 
 	app.stage.addChild(sprite)
 
 	sprite.x = app.screen.width * 0.5
 	sprite.y = app.screen.height * 0.5
-
-	app.ticker.add(delta => {
-		sprite.rotation += 0.02 * delta
-	})
+	
+    setTimeout(()=>{
+        scene.start('boot')
+    }, 2000)
 })
