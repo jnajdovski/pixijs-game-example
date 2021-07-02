@@ -14,17 +14,4 @@ scene.add('boot', new Boot())
 scene.add('menu', new Menu())
 scene.add('game', new Game())
 scene.add('score', new Score())
-
-app.loader.add('background', './assets/background.jpg')
-app.loader.load(() => {
-	const sprite = PIXI.Sprite.from('background')
-	sprite.anchor.set(0.5) 
-	app.stage.addChild(sprite)
-
-	sprite.x = app.screen.width * 0.5
-	sprite.y = app.screen.height * 0.5
-	
-    setTimeout(()=>{
-        scene.start('boot')
-    }, 2000)
-})
+scene.start('boot')

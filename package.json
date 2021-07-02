@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "pixi-scenes": "^1.4.0",
-    "pixi.js": "^6.0.4"
+    "pixi.js": "^6.0.4",
+    "signals": "^1.0.0"
   }
 }

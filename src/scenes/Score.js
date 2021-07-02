@@ -5,6 +5,10 @@ export default class Score extends Scene {
         console.log('Init Score');
     }
 
+    start() {
+        console.log('Score Start');
+    }
+
     update () {
 
     }

@@ -5,6 +5,10 @@ export default class Game extends Scene {
         console.log('Init Gamee');
     }
 
+    start() {
+        console.log('Game Start');
+    }
+
     update () {
 
     }
