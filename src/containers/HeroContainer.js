@@ -27,7 +27,7 @@ class HeroContainer extends Container {
 
     _dropBomb() {
         const bomb = createSprite('plane_bomb',this.hero.x, this.hero.y)
-        this.addChild(bomb)
+        this.addChildAt(bomb, 0)
         this.bombsArray.push(bomb)
     }
 }

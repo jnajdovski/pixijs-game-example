@@ -1,8 +1,8 @@
 import { Scene } from "pixi-scenes";
-import { Container } from "@pixi/display";
 import BackgroundContainer from "../containers/BackgroundContainer";
 import HeroContainer from "../containers/HeroContainer";
 import checkCollision from "../helpers/checkCollision"
+import moveElements from "../helpers/moveElements";
 import * as PIXI from "pixi.js"
 
 export default class Game extends Scene {
@@ -12,36 +12,58 @@ export default class Game extends Scene {
         this.backgroundContainer = new BackgroundContainer(this.centerX, this.centerY)
         this.heroContainer = new HeroContainer(this.centerX, this.centerY)
 
+        this.explosionFrames = [];
+        for (let i = 0; i < 26; i++) {
+            const texture = PIXI.Texture.from(`Explosion_Sequence_A ${i + 1}.png`);
+            this.explosionFrames.push(texture);
+        }
+
         this.addChild(this.backgroundContainer)
         this.addChild(this.heroContainer)
     }
 
-    start() {
+    start () {
         this.backgroundContainer.draw()
         this.heroContainer.draw()
+        this.backgroundContainer.startFailling()
     }
 
-    moveHeroBombs() {
-        for (let [index, bomb] of this.heroContainer.bombsArray.entries()) {
-            bomb.y += 10
-            if ((checkCollision(bomb, this.backgroundContainer.bgLand)) || (bomb.y > 720)) {
+    checkBombs () {
+        const { bombsArray } = this.heroContainer
+        const { bgLand } = this.backgroundContainer
+        moveElements(bombsArray, 'down', 10)
+        for (let [index, bomb] of bombsArray.entries()) {
+            if (checkCollision(bomb, bgLand)) {
                 this.explosion(bomb.x, bomb.y)
                 bomb.destroy()
                 bomb = null
-                this.heroContainer.bombsArray.splice(index, 1)
-                
+                bombsArray.splice(index, 1)
             }
         }
     }
 
-    explosion(x, y) {
-        const frames = [];
-        for (let i = 0; i < 26; i++) {
-            const texture = PIXI.Texture.from(`Explosion_Sequence_A ${i + 1}.png`);
-            frames.push(texture);
+    checkFuelTanks () {
+        const { hero } = this.heroContainer
+        const { fuelsArray } = this.backgroundContainer
+        moveElements(fuelsArray, 'down', Math.floor(Math.random() * 4) + 2)
+        for (let [index, fuel] of fuelsArray.entries()) {
+            if (checkCollision(fuel, hero)) {
+                fuel.destroy()
+                fuel = null
+                fuelsArray.splice(index, 1)
+                hero.addFuel()
+            }
         }
+    }
 
-        const anim = new PIXI.AnimatedSprite(frames);
+    checkBackground() {
+        const { bgLand, bgMountains } = this.backgroundContainer
+        moveElements(bgLand, 'left', 2)
+        moveElements(bgMountains, 'left', 0.5)
+    }
+
+    explosion (x, y) {
+        const anim = new PIXI.AnimatedSprite(this.explosionFrames);
         anim.anchor.set(0.5);
         anim.x = x;
         anim.y = y + 30;
@@ -56,7 +78,13 @@ export default class Game extends Scene {
 
     update () {
         if (this.heroContainer.bombsArray.length) {
-            this.moveHeroBombs()
+            this.checkBombs()
         }
+
+        if (this.backgroundContainer.fuelsArray.length) {
+            this.checkFuelTanks()
+        }
+
+        this.checkBackground()
     }
 }

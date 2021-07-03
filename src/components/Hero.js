@@ -31,6 +31,10 @@ class Hero extends Sprite {
             this.position.y = newPosition.y >= 450 ? 450 : newPosition.y;
         }
     }
+
+    addFuel() {
+        console.log('Fuel Added');
+    }
 }
 
 export default Hero

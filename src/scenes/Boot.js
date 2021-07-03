@@ -28,7 +28,7 @@ export default class Boot extends Scene {
 
         //load background assets
         this.loader.add('cloud', './assets/background/cloud.png');
-        this.loader.add('sky', './assets/background/sky.jpg');
+        this.loader.add('sky', './assets/background/sky.png');
         this.loader.add('land', './assets/background/land.png');
         this.loader.add('mountains', './assets/background/mountains.png');
         this.loader.add('gasoline_tank', './assets/background/gasoline.png');
