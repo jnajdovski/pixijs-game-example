@@ -7,7 +7,7 @@ import signals from 'signals'
 
 export default class Button extends PIXI.Sprite.from {
     /**
-     * 
+     * Creates and returns interactive sprite
      * @param {String} texture 
      * @param {Number} x 
      * @param {Number} y 

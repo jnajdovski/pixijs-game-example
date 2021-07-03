@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 
 /**
- * 
+ * Creates and returns sprite
  * @param {String} texture 
  * @param {Number} x 
  * @param {Number} y 

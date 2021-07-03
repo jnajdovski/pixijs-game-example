@@ -14,17 +14,27 @@ class HeroContainer extends Container {
         document.addEventListener('keydown', (key) => this._onKeyDown(key));
     }
 
+    /**
+     * Create instance of Hero class
+     */
     draw() {
         this.hero = new Hero(200, 300)
         this.addChild(this.hero)
     }
 
+    /**
+     * Checks the keyCode of pressed key if its 32 (Space) to call the _dropBomb function
+     * @param {Number} param0 
+     */
     _onKeyDown({ keyCode }) {
         if (keyCode === 32) {
             this._dropBomb()
         }
     }
 
+    /**
+     * Creates bomb sprite
+     */
     _dropBomb() {
         const bomb = createSprite('plane_bomb',this.hero.x, this.hero.y)
         this.addChildAt(bomb, 0)

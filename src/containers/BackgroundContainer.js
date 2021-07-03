@@ -1,8 +1,9 @@
 import { Container } from "@pixi/display";
+import { TilingSprite } from "@pixi/sprite-tiling";
 import createSprite from "../helpers/createSprite";
 
 /**
- * Displaying and move the background elements
+ * Container for all background elements
  */
 class BackgroundContainer extends Container {
     constructor(centerX, centerY) {
@@ -10,19 +11,45 @@ class BackgroundContainer extends Container {
         this.centerX = centerX
         this.centerY = centerY
         this.fuelsArray = []
+        this.bgSpeed = 4
     }
 
     draw() {
-        this.bgSky = createSprite('sky', this.centerX, this.centerY)
-        this.bgMountains = createSprite('mountains', this.centerX, this.centerY)
-        this.bgLand = createSprite('land', this.centerX, this.centerY + 264)
-
+        this.bgSky =  this._setBackground('sky')
+        this.bgMountains = this._setBackground('mountains')
+        this.bgLand = this._setBackground('land')
         this.addChild(this.bgSky)
         this.addChild(this.bgMountains)
         this.addChild(this.bgLand)
+        this.createFuelTanks()
     }
 
-    startFailling() {
+    /**
+     * Creating tilling sprite
+     * @param {String} texture 
+     * @returns 
+     */
+    _setBackground(texture) {
+        let tilling = new TilingSprite.from(texture, 0, 0)
+        tilling.width = 1280
+        tilling.height = 720
+        tilling.position.set(0, 0)
+        return tilling
+    }
+
+    /**
+     * function that moves the background layers
+     */
+    updateBackground() {
+        this.bgLand.tilePosition.x -= this.bgSpeed
+        this.bgMountains.tilePosition.x -= this.bgSpeed / 2
+        this.bgSky.tilePosition.x -= this.bgSpeed / 4
+    }
+
+    /**
+     * function that creates fuel tanks on random interval
+     */
+     createFuelTanks() {
         const max = this.centerX * 2
         const min = this.centerX - 200
         this.fallingInterval = setInterval(() => {
@@ -33,7 +60,10 @@ class BackgroundContainer extends Container {
         }, Math.floor(Math.random() * 15000) + 6000);
     }
 
-    stopFalling(){
+    /**
+     * removes the interval for creating new fuel tanks
+     */
+    stopFalling() {
         clearInterval(this.fallingInterval)
     }
 }

@@ -27,7 +27,6 @@ export default class Boot extends Scene {
         this.loader.add('explosion', './assets/hero/explosion.json')
 
         //load background assets
-        this.loader.add('cloud', './assets/background/cloud.png');
         this.loader.add('sky', './assets/background/sky.png');
         this.loader.add('land', './assets/background/land.png');
         this.loader.add('mountains', './assets/background/mountains.png');

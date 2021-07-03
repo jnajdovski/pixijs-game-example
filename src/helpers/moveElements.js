@@ -1,17 +1,19 @@
+import { Sprite } from "pixi.js"
+
+/**
+ * Functiont that changes the position of given elements by given direction and speed
+ * @param {Array<Sprite>} elementsToMove
+ * @param {String} direction 
+ * @param {Number} speed 
+ */
 const moveElements = (elementsToMove, direction = 'down', speed = 10) => {
-    if (Array.isArray(elementsToMove)) {
-        for (let el of elementsToMove) {
-            if (direction == 'down') {
-                el.y += speed
-            } else if(direction == 'left') {
-                el.x -= speed
-            }
-        }
-    } else {
+    if(elementsToMove.length == 0) return
+
+    for (let el of elementsToMove) {
         if (direction == 'down') {
-            elementsToMove.y += speed
+            el.y += speed
         } else if(direction == 'left') {
-            elementsToMove.x -= speed
+            el.x -= speed
         }
     }
 }
