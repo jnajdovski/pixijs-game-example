@@ -6,7 +6,7 @@ import Menu from './scenes/Menu'
 import Game from './scenes/Game'
 import Score from './scenes/Score'
 
-const app = new PIXI.Application({ resizeTo: window })
+const app = new PIXI.Application({ width: 1280, height: 720 })
 document.body.appendChild(app.view)
 
 const scene = new SceneManager(app)
