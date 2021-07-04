@@ -10,6 +10,7 @@ import GuiContainer from "../containers/GuiContainer";
 import signals from "signals";
 import Popup from "../components/Popup";
 import clearObject from "../helpers/clearObject";
+import saveGame from "../helpers/saveGame"
 
 export default class Game extends Scene {
     /**
@@ -59,9 +60,11 @@ export default class Game extends Scene {
                 hero.refresh()
             } else {
                 this.guiContainer.updateLivesText(0)
-                this.gameFinished = true
                 hero.renderable = false
-                this.gameOver()
+                if(!this.gameFinished) {
+                    this.gameFinished = true
+                    this.gameOver()
+                }
             }
         })
     }
@@ -121,10 +124,11 @@ export default class Game extends Scene {
         this.addChild(anim)
     }
 
-    gameOver () {
+    gameOver() {
         this.gameFinished = true
+        saveGame(this.app.playerConfig)
         this.finishPopup = new Popup(this.centerX, this.centerY)
-        this.finishPopup.show('You are dead')
+        this.finishPopup.show(`Game Over\nYour score: ${this.app.playerConfig.score}`)
         this.addChild(this.finishPopup)
         this.finishPopup.onButtonClicked.add(this.shutdown, this)
     }

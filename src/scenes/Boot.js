@@ -15,7 +15,7 @@ export default class Boot extends Scene {
             lives: 3,
             fuel: 10,
             score: 0,
-            highScore: 0,
+            highScore: eval(window.localStorage.getItem('high-score')) || [],
         }
     }
 
