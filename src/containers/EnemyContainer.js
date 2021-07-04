@@ -22,10 +22,17 @@ class EnemyContainer extends Container {
         const max = 6000
         const min = 2000
         this.dispatchEnemy = setInterval(() => {
-            const enemy = new Enemy(1306, 524, hero)
-            this.addChild(enemy)
-            enemy.shot()
-            this.enemyArray.push(enemy)
+            const freeEnemy = this.enemyArray.find(({ isActive }) => isActive == false)
+            if (freeEnemy) {
+                freeEnemy.reset(1306, 524, hero)
+                freeEnemy.shot()
+            } else {
+                const enemy = new Enemy(1306, 524, hero)
+                this.addChild(enemy)
+                enemy.shot()
+                this.enemyArray.push(enemy)
+            }
+           
         }, Math.floor(Math.random() * (max - min) + min));
     }
 

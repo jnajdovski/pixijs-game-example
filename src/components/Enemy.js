@@ -19,7 +19,7 @@ class Enemy extends Sprite {
         this.y = y
         this.hero = hero
         this.anchor.set(.5)
-        this.bulletArray = []
+        this.isActive = true
     }
 
     /**
@@ -27,31 +27,49 @@ class Enemy extends Sprite {
      */
     remove() {
         clearInterval(this.shotingInterval)
+        this.isActive = false
+        this.renderable = false
+    }
 
-        while (this.bulletArray.length > 0) {
-            let bullet = this.bulletArray.pop()
-            bullet.destroy()
-        }
-        this.destroy()
+    reset(x, y, hero) {
+        this.x = x
+        this.y = y
+        this.hero = hero
+        this.renderable = true
+        this.isActive = true
     }
 
     /**
      * Function that creates bullet and gives direction to bullet
      */
     shot() {
-        const max = 4000
+        const max = 3000
         const min = 1500
 
         this.shotingInterval = setInterval(() => {
             const { x, y } = this.hero
-            const bullet = createSprite('tank_bullet', this.x, this.y)
-            bullet.goal = {
-                x,
-                y
+            const freeBullet = this.parent.bulletsArray.find(({ isActive }) => isActive == false)
+            if (freeBullet) {
+                freeBullet.x = this.x
+                freeBullet.y = this.y
+                freeBullet.renderable = true
+                freeBullet.rotation = 0
+                freeBullet.isActive = true
+                freeBullet.goal = {
+                    x,
+                    y
+                }
+            } else {
+                const bullet = createSprite('tank_bullet', this.x, this.y)
+                bullet.goal = {
+                    x,
+                    y
+                }
+                bullet.calculatePos = true
+                bullet.isActive = true
+                this.parent.addChild(bullet)
+                this.parent.bulletsArray.push(bullet)
             }
-            bullet.calculatePos = true
-            this.parent.addChild(bullet)
-            this.bulletArray.push(bullet)
         }, Math.floor(Math.random() * (max - min) + min));
     }
 }

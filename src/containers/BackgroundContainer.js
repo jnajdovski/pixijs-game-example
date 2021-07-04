@@ -53,10 +53,19 @@ class BackgroundContainer extends Container {
         const max = this.centerX * 2
         const min = this.centerX - 200
         this.fallingInterval = setInterval(() => {
-            const fuelTank = createSprite('gasoline_tank', Math.floor(Math.random() * (max - min + 1) + min), -100)
-            fuelTank.type = 'fuel'
-            this.addChild(fuelTank)
-            this.fuelsArray.push(fuelTank)
+            const freeFuelTank = this.fuelsArray.find(({ isActive }) => isActive == false)
+            const rndX = Math.floor(Math.random() * (max - min + 1) + min)
+            if (freeFuelTank) {
+                freeFuelTank.x = rndX
+                freeFuelTank.y = -100
+                freeFuelTank.renderable = true
+                freeFuelTank.isActive = true
+            } else {
+                const fuelTank = createSprite('gasoline_tank', rndX, -100)
+                fuelTank.isActive = true
+                this.addChild(fuelTank)
+                this.fuelsArray.push(fuelTank)
+            }
         }, Math.floor(Math.random() * 15000) + 6000);
     }
 

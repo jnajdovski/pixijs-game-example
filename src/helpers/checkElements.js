@@ -10,7 +10,7 @@ import Hero from "../components/Hero";
  * @param {Array<Sprite>} fuelsArray 
  * @returns {Array} array with possitions where needs to be explosion
  */
-function checkElements(enemyArray, bombsArray, hero, fuelsArray) {
+function checkElements(enemyArray, bombsArray, hero, fuelsArray, bulletsArray) {
     let explosionPositions = []
     
     const checkCollision = (obj1, obj2) => {
@@ -19,56 +19,32 @@ function checkElements(enemyArray, bombsArray, hero, fuelsArray) {
         return ab.x + ab.width > bb.x && ab.x < bb.x + bb.width && ab.y + ab.height > bb.y && ab.y < bb.y + bb.height;
     }
 
-    const isOutOfGame = ({ x,y }) => {
-        if ((x <= 0 && y <= 0) || (x >= 1280 && y >= 720)) {
+    const isOutOfGame = ({ x, y }) => {
+        if ((x <= 0 || y <= 0) || (x >= 1280 || y >= 720)) {
             return true
         }
         return false
     }
 
-    for (let [enemyIndex, enemy] of enemyArray.entries()) {
-        for (let [bombIndex, bomb] of bombsArray.entries()) {
-            if (bomb && enemy) {
-                if (checkCollision(bomb, enemy)) {
-                    explosionPositions.push({x: enemy.x, y: enemy.y})
-                    bomb.destroy()
-                    bomb = null
-                    bombsArray.splice(bombIndex, 1)
-    
-                    enemy.remove()
-                    enemy = null
-                    enemyArray.splice(enemyIndex, 1)
-                }
-    
-                if (bomb && isOutOfGame(bomb)) {
-                    bomb.destroy()
-                    bomb = null
-                    bombsArray.splice(bombIndex, 1)
-                }
-            }
-            
-        }
+    for (let enemy of enemyArray) {
+        if (enemy.isActive) {
+            for (let bomb of bombsArray) {
+                if (bomb.isActive) {
+                    if (checkCollision(bomb, enemy)) {
+                        explosionPositions.push({x: enemy.x, y: enemy.y})
+                        bomb.renderable = false
+                        bomb.isActive = false
+                        enemy.remove()
+                    }
         
-        if (enemy) {
-            for (let [bulletIndex, bullet] of enemy.bulletArray.entries()) {
-                if (checkCollision(hero, bullet)) {
-                    explosionPositions.push({x: hero.x, y: hero.y})
-                    hero.refresh()
-                    bullet.destroy()
-                    bullet = null
-                    enemy.bulletArray.splice(bulletIndex, 1)
-                } else {
-                    if (bullet) {
-                        if (isOutOfGame(bullet)) {
-                            bullet.destroy()
-                            bullet = null
-                            enemy.bulletArray.splice(bulletIndex, 1)
-                        }
+                    if (isOutOfGame(bomb)) {
+                        bomb.renderable = false
+                        bomb.isActive = false
                     }
                 }
             }
-
-            if (checkCollision(hero, enemy)) {
+            
+            if (hero.isActive && checkCollision(hero, enemy)) {
                 explosionPositions.push({x: hero.x, y: hero.y})
                 enemy.remove()
                 hero.refresh()
@@ -76,23 +52,38 @@ function checkElements(enemyArray, bombsArray, hero, fuelsArray) {
 
             if (enemy.x <= 0) {
                 enemy.remove()
-                enemyArray.splice(enemyIndex, 1)
             }
         }
     }
 
-    for (let [index, fuel] of fuelsArray.entries()) {
-        if (checkCollision(fuel, hero)) {
-            fuel.destroy()
-            fuel = null
-            fuelsArray.splice(index, 1)
-            hero.addFuel()
-        }
+    for (let bullet of bulletsArray) {
+        if (bullet.isActive) {
+            if (hero.isActive && checkCollision(bullet, hero)) {
+                explosionPositions.push({x: hero.x, y: hero.y})
+                bullet.renderable = false
+                bullet.isActive = false
+                hero.refresh()
+            }
 
-        if (fuel && isOutOfGame(fuel)) {
-            fuel.destroy()
-            fuel = null
-            fuelsArray.splice(index, 1)
+            if (isOutOfGame(bullet)) {
+                bullet.renderable = false
+                bullet.isActive = false
+            }
+        }
+    }
+
+    for (let fuel of fuelsArray) {
+        if (fuel.isActive) {
+            if (hero.isActive && checkCollision(fuel, hero)) {
+                fuel.renderable = false
+                fuel.isActive = false
+                hero.addFuel()
+            }
+    
+            if (fuel.y >= 720) {
+                fuel.renderable = false
+                fuel.isActive = false
+            }
         }
     }
 

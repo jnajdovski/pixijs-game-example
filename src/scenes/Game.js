@@ -44,20 +44,19 @@ export default class Game extends Scene {
      */
     updateElements() {
         const { bombsArray } = this.heroContainer
-        const { enemyArray } = this.enemyContainer
+        const { enemyArray, bulletsArray } = this.enemyContainer
         const { hero } = this.heroContainer
         const { fuelsArray } = this.backgroundContainer
 
-        for(let enemy of enemyArray) {
-            for (let bullet of enemy.bulletArray) {
-                moveEnemyBullets(bullet)
-            }
+        for (let bullet of bulletsArray) {
+            moveEnemyBullets(bullet)
         }
+
         moveElements(fuelsArray, 'down', Math.floor(Math.random() * 4) + 2)
         moveElements(bombsArray, 'down', 10)
         moveElements(enemyArray, 'left', 2)
 
-        this.explosionsArray = checkElements(enemyArray, bombsArray, hero, fuelsArray)
+        this.explosionsArray = checkElements(enemyArray, bombsArray, hero, fuelsArray, bulletsArray)
         for(let exp of this.explosionsArray) {
             this.explosion(exp.x, exp.y)
         }

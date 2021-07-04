@@ -15,6 +15,7 @@ class Hero extends Sprite {
         }
         this.x = this.startingPos.x
         this.y = this.startingPos.y
+        this.isActive = true
         this.anchor.set(.5)
         this.interactive = true
         this.on('mousedown', this.onDragStart)
@@ -51,11 +52,16 @@ class Hero extends Sprite {
         this.visible = false
         this.x = this.startingPos.x
         this.y = this.startingPos.y
+        this.isActive = false
         this.onDragEnd()
         
         setTimeout(() => {
             this.visible = true
         }, 600);
+
+        setTimeout(() => {
+            this.isActive = true
+        }, 1200);
     }
 
     /**

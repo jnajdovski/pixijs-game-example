@@ -36,9 +36,18 @@ class HeroContainer extends Container {
      * Creates bomb sprite
      */
     _dropBomb() {
-        const bomb = createSprite('plane_bomb',this.hero.x, this.hero.y)
-        this.addChildAt(bomb, 0)
-        this.bombsArray.push(bomb)
+        const freeBomb = this.bombsArray.find(({ isActive }) => isActive == false)
+        if (freeBomb) {
+            freeBomb.x = this.hero.x
+            freeBomb.y = this.hero.y
+            freeBomb.renderable = true
+            freeBomb.isActive = true
+        } else {
+            const bomb = createSprite('plane_bomb',this.hero.x, this.hero.y)
+            bomb.isActive = true
+            this.addChildAt(bomb, 0)
+            this.bombsArray.push(bomb)
+        }
     }
 }
 
