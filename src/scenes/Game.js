@@ -62,6 +62,8 @@ export default class Game extends Scene {
             this.explosion(hero.x, hero.y)
             if (this.app.playerConfig.lives > 0) {
                 this.guiContainer.updateLivesText(this.app.playerConfig.lives)
+                this.app.playerConfig.fuel = 10
+                this.app.onFuelTaken.dispatch(0)
                 hero.refresh()
             } else {
                 this.guiContainer.updateLivesText(0)

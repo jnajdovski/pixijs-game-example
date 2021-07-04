@@ -28,6 +28,8 @@ export default class Menu extends Scene {
     }
 
     startGame() {
+        this.app.playerConfig.fuel = 10
+        this.app.playerConfig.lives = 3
         this.shutdown()
         this.scenes.start('game')
     }

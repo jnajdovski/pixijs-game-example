@@ -33,6 +33,7 @@ const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, f
             for (let bomb of bombsArray) {
                 if (bomb.isActive) {
                     if (checkCollision(bomb, enemy)) {
+                        explosionPositions.push({x: enemy.x, y: enemy.y})
                         bomb.renderable = false
                         bomb.isActive = false
                         enemy.remove()
