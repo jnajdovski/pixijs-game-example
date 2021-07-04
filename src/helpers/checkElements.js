@@ -10,22 +10,23 @@ import Hero from "../components/Hero";
  * @param {Array<Sprite>} fuelsArray 
  * @returns {Array} array with possitions where needs to be explosion
  */
-function checkElements(enemyArray, bombsArray, hero, fuelsArray, bulletsArray) {
+
+const checkCollision = (obj1, obj2) => {
+    var ab = obj1.getBounds();
+    var bb = obj2.getBounds();
+    return ab.x + ab.width > bb.x && ab.x < bb.x + bb.width && ab.y + ab.height > bb.y && ab.y < bb.y + bb.height;
+}
+
+const isOutOfGame = ({ x, y }) => {
+    if ((x <= 0 || y <= 0) || (x >= 1280 || y >= 720)) {
+        return true
+    }
+    return false
+}
+
+const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, fireBallsArray) => {
     let explosionPositions = []
     
-    const checkCollision = (obj1, obj2) => {
-        var ab = obj1.getBounds();
-        var bb = obj2.getBounds();
-        return ab.x + ab.width > bb.x && ab.x < bb.x + bb.width && ab.y + ab.height > bb.y && ab.y < bb.y + bb.height;
-    }
-
-    const isOutOfGame = ({ x, y }) => {
-        if ((x <= 0 || y <= 0) || (x >= 1280 || y >= 720)) {
-            return true
-        }
-        return false
-    }
-
     for (let enemy of enemyArray) {
         if (enemy.isActive) {
             for (let bomb of bombsArray) {
@@ -83,6 +84,22 @@ function checkElements(enemyArray, bombsArray, hero, fuelsArray, bulletsArray) {
             if (fuel.y >= 720) {
                 fuel.renderable = false
                 fuel.isActive = false
+            }
+        }
+    }
+
+    for (let fireBall of fireBallsArray) {
+        if (fireBall.isActive) {
+            if (hero.isActive && checkCollision(fireBall, hero)) {
+                explosionPositions.push({x: hero.x, y: hero.y})
+                fireBall.renderable = false
+                fireBall.isActive = false
+                hero.refresh()
+            }
+    
+            if (fireBall.y >= 720) {
+                fireBall.renderable = false
+                fireBall.isActive = false
             }
         }
     }

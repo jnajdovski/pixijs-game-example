@@ -7,7 +7,7 @@ import * as PIXI from 'pixi.js'
  * @param {Number} y 
  * @returns {PIXI.Sprite} sprite
  */
-function createSprite(texture, x, y) {
+const createSprite = (texture, x, y) => {
     let sprite = new PIXI.Sprite.from(texture);
     sprite.x = x;
     sprite.y = y;

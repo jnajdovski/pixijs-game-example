@@ -28,6 +28,8 @@ export default class Game extends Scene {
         this.addChild(this.backgroundContainer)
         this.addChild(this.heroContainer)
         this.addChild(this.enemyContainer)
+
+        this.app.gamePaused = false
     }
 
     /**
@@ -44,7 +46,7 @@ export default class Game extends Scene {
      */
     updateElements() {
         const { bombsArray } = this.heroContainer
-        const { enemyArray, bulletsArray } = this.enemyContainer
+        const { enemyArray, bulletsArray, fireBallsArray } = this.enemyContainer
         const { hero } = this.heroContainer
         const { fuelsArray } = this.backgroundContainer
 
@@ -55,8 +57,9 @@ export default class Game extends Scene {
         moveElements(fuelsArray, 'down', Math.floor(Math.random() * 4) + 2)
         moveElements(bombsArray, 'down', 10)
         moveElements(enemyArray, 'left', 2)
+        moveElements(fireBallsArray, 'down', Math.floor(Math.random() * 6) + 2)
 
-        this.explosionsArray = checkElements(enemyArray, bombsArray, hero, fuelsArray, bulletsArray)
+        this.explosionsArray = checkElements(enemyArray, bombsArray, hero, fuelsArray, bulletsArray, fireBallsArray)
         for(let exp of this.explosionsArray) {
             this.explosion(exp.x, exp.y)
         }

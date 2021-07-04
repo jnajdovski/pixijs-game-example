@@ -36,6 +36,7 @@ export default class Boot extends Scene {
         //load enemy assets
         this.loader.add('tank', './assets/enemy/tank.png');
         this.loader.add('tank_bullet', './assets/enemy/bullet.png');
+        this.loader.add('fire_ball', './assets/enemy/fire-ball.png')
     }
 
     /**
