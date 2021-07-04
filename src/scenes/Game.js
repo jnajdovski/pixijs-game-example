@@ -42,9 +42,13 @@ export default class Game extends Scene {
         this.app.onEnemyDestroy = new signals()
         this.app.onHeroDestroy = new signals()
 
-        this.app.onFuelTaken.add(() => {
-            this.app.playerConfig.fuel += 10
+        this.app.onFuelTaken.add((fuel) => {
+            this.app.playerConfig.fuel += fuel
             this.guiContainer.updateFuelText(this.app.playerConfig.fuel)
+            if(this.app.playerConfig.fuel <= 0) {
+                this.app.onHeroDestroy.dispatch()
+                this.guiContainer.updateFuelText(0)
+            }
         })
 
         this.app.onEnemyDestroy.add(() => {
@@ -55,6 +59,7 @@ export default class Game extends Scene {
         this.app.onHeroDestroy.add(() => {
             this.app.playerConfig.lives -= 1
             const { hero } = this.heroContainer
+            this.explosion(hero.x, hero.y)
             if (this.app.playerConfig.lives > 0) {
                 this.guiContainer.updateLivesText(this.app.playerConfig.lives)
                 hero.refresh()
@@ -62,7 +67,6 @@ export default class Game extends Scene {
                 this.guiContainer.updateLivesText(0)
                 hero.renderable = false
                 if(!this.gameFinished) {
-                    this.gameFinished = true
                     this.gameOver()
                 }
             }
@@ -76,8 +80,19 @@ export default class Game extends Scene {
         const { lives, fuel } = this.app.playerConfig
         this.backgroundContainer.draw()
         this.heroContainer.draw()
+        const { hero } = this.heroContainer
         this.enemyContainer.draw(this.heroContainer.hero)
         this.guiContainer.draw(lives, fuel)
+
+        this.decreaseHeroFuel(hero)
+    }
+
+    decreaseHeroFuel(hero) {
+        this.fuelInterval = setInterval(() => {
+            if (hero.isActive) {
+                this.app.onFuelTaken.dispatch(-1)
+            }
+        }, 1150);
     }
 
     /**
@@ -125,6 +140,7 @@ export default class Game extends Scene {
     }
 
     gameOver() {
+        clearInterval(this.fuelInterval)
         this.gameFinished = true
         saveGame(this.app.playerConfig)
         this.finishPopup = new Popup(this.centerX, this.centerY)

@@ -33,7 +33,6 @@ const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, f
             for (let bomb of bombsArray) {
                 if (bomb.isActive) {
                     if (checkCollision(bomb, enemy)) {
-                        explosionPositions.push({x: enemy.x, y: enemy.y})
                         bomb.renderable = false
                         bomb.isActive = false
                         enemy.remove()
@@ -62,7 +61,6 @@ const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, f
     for (let bullet of bulletsArray) {
         if (bullet.isActive) {
             if (hero.isActive && checkCollision(bullet, hero)) {
-                explosionPositions.push({x: hero.x, y: hero.y})
                 bullet.renderable = false
                 bullet.isActive = false
                 app.onHeroDestroy.dispatch()
@@ -80,7 +78,7 @@ const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, f
             if (hero.isActive && checkCollision(fuel, hero)) {
                 fuel.renderable = false
                 fuel.isActive = false
-                app.onFuelTaken.dispatch()
+                app.onFuelTaken.dispatch(10)
             }
     
             if (fuel.y >= 720) {
@@ -93,7 +91,6 @@ const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, f
     for (let fireBall of fireBallsArray) {
         if (fireBall.isActive) {
             if (hero.isActive && checkCollision(fireBall, hero)) {
-                explosionPositions.push({x: hero.x, y: hero.y})
                 fireBall.renderable = false
                 fireBall.isActive = false
                 app.onHeroDestroy.dispatch()
