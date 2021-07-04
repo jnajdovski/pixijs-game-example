@@ -14,7 +14,6 @@ const sortHighScoreArray = (highScore, score) => {
 const saveGame = (playerConfig) => {
     const { highScore, score } = playerConfig
     sortHighScoreArray(highScore, score)
-    console.log(highScore);
     window.localStorage.setItem('high-score', JSON.stringify(highScore))
 }
 

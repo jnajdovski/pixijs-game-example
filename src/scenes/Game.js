@@ -71,12 +71,14 @@ export default class Game extends Scene {
                 }
             }
         })
+        this.initialize = true
     }
 
     /**
      * showing containers
      */
     start() {
+        if (!this.initialize) this.init()
         const { lives, fuel } = this.app.playerConfig
         this.backgroundContainer.draw()
         this.heroContainer.draw()
@@ -157,6 +159,7 @@ export default class Game extends Scene {
     }
 
     shutdown() {
+        this.initialize = false
         this.backgroundContainer.clear()
         this.backgroundContainer = null
         this.heroContainer.clear()
@@ -167,6 +170,5 @@ export default class Game extends Scene {
         this.guiContainer = null
         clearObject(this.children)
         this.scenes.start('score')
-        this.destroy(true)
     }
 }

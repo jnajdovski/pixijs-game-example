@@ -31,6 +31,10 @@ export default class Boot extends Scene {
         this.loader.add('button_start', './assets/menu/button-start.png');
         this.loader.add('button_score', './assets/menu/button-score.png');
 
+        //score assets
+        this.loader.add('score_background', './assets/score/background.png')
+        this.loader.add('button_menu', './assets/score/button-menu.png');
+
         //load hero assets
         this.loader.add('plane', './assets/hero/plane.png');
         this.loader.add('plane_bomb', './assets/hero/bomb.png');

@@ -10,9 +10,11 @@ export default class Menu extends Scene {
         this.centerY = this.app.screen.height / 2;
         this.menuContainer = new Container()
         this.addChild(this.menuContainer)
+        this.initialize = true
     }
 
     start() {
+        if (!this.initialize) this.init()
         this.background = createSprite('background', this.centerX, this.centerY);
         this.menuContainer.addChild(this.background);
 
@@ -32,19 +34,16 @@ export default class Menu extends Scene {
 
     showScore() {
         this.shutdown()
-        console.log('Show score');
-    }
-
-    update () {
-
+        this.scenes.start('score')
     }
 
     shutdown() {
-        clearObject(this.menuContainer.children)
-        this.menuContainer.destroy(true)
+        this.initialize = false
         this.background = null
         this.buttonStart = null
         this.buttonScore = null
-        this.destroy(true)
+        clearObject(this.menuContainer.children)
+        this.menuContainer.destroy(true)
+        this.scenes.stop()
     }
 }
