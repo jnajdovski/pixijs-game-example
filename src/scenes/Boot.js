@@ -10,12 +10,22 @@ export default class Boot extends Scene {
         this.loadAssets();
         this.loader.load();
         this.loader.onComplete.add(this.finishLoading, this);
+
+        this.app.playerConfig = {
+            lives: 3,
+            fuel: 10,
+            score: 0,
+            highScore: 0,
+        }
     }
 
     /**
      * Add all assets to the loader to be loaded
      */
     loadAssets() {
+        this.loader.add('popup', './assets/popup.png')
+        this.loader.add('button_ok', './assets/button-ok.png')
+
         //menu assets
         this.loader.add('background', './assets/menu/background.jpg');
         this.loader.add('button_start', './assets/menu/button-start.png');

@@ -1,6 +1,7 @@
 import { Container } from "@pixi/display";
 import Enemy from "../components/Enemy";
 import Hero from "../components/Hero";
+import clearObject from "../helpers/clearObject";
 import createSprite from "../helpers/createSprite";
 
 /**
@@ -67,6 +68,15 @@ class EnemyContainer extends Container {
     remove(){
         clearInterval(this.dispatchEnemy)
         clearInterval(this.dispatchFireBall)
+    }
+
+    clear() {
+        this.remove()
+        clearObject(this.fireBallsArray)
+        clearObject(this.enemyArray, true)
+        clearObject(this.bulletsArray)
+        clearObject(this.children)
+        this.destroy(true)
     }
 }
 

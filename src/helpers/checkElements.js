@@ -1,15 +1,7 @@
-import { Sprite } from "pixi.js";
+import { Application, Sprite } from "pixi.js";
 import Enemy from "../components/Enemy";
 import Hero from "../components/Hero";
 
-/**
- * function that checks if some elements are colliding and what elements need to be destroyes
- * @param {Array<Enemy>} enemyArray 
- * @param {Array<Sprite>} bombsArray 
- * @param {Hero} hero 
- * @param {Array<Sprite>} fuelsArray 
- * @returns {Array} array with possitions where needs to be explosion
- */
 
 const checkCollision = (obj1, obj2) => {
     var ab = obj1.getBounds();
@@ -24,7 +16,16 @@ const isOutOfGame = ({ x, y }) => {
     return false
 }
 
-const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, fireBallsArray) => {
+/**
+ * function that checks if some elements are colliding and what elements need to be destroyes
+ * @param {Array<Enemy>} enemyArray 
+ * @param {Array<Sprite>} bombsArray 
+ * @param {Hero} hero 
+ * @param {Array<Sprite>} fuelsArray
+ * @returns {Array} array with possitions where needs to be explosion
+ */
+
+const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, fireBallsArray, app) => {
     let explosionPositions = []
     
     for (let enemy of enemyArray) {
@@ -36,6 +37,7 @@ const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, f
                         bomb.renderable = false
                         bomb.isActive = false
                         enemy.remove()
+                        app.onEnemyDestroy.dispatch()
                     }
         
                     if (isOutOfGame(bomb)) {
@@ -48,7 +50,7 @@ const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, f
             if (hero.isActive && checkCollision(hero, enemy)) {
                 explosionPositions.push({x: hero.x, y: hero.y})
                 enemy.remove()
-                hero.refresh()
+                app.onHeroDestroy.dispatch()
             }
 
             if (enemy.x <= 0) {
@@ -63,7 +65,7 @@ const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, f
                 explosionPositions.push({x: hero.x, y: hero.y})
                 bullet.renderable = false
                 bullet.isActive = false
-                hero.refresh()
+                app.onHeroDestroy.dispatch()
             }
 
             if (isOutOfGame(bullet)) {
@@ -78,7 +80,7 @@ const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, f
             if (hero.isActive && checkCollision(fuel, hero)) {
                 fuel.renderable = false
                 fuel.isActive = false
-                hero.addFuel()
+                app.onFuelTaken.dispatch()
             }
     
             if (fuel.y >= 720) {
@@ -94,7 +96,7 @@ const checkElements = (enemyArray, bombsArray, hero, fuelsArray, bulletsArray, f
                 explosionPositions.push({x: hero.x, y: hero.y})
                 fireBall.renderable = false
                 fireBall.isActive = false
-                hero.refresh()
+                app.onHeroDestroy.dispatch()
             }
     
             if (fireBall.y >= 720) {

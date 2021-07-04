@@ -1,5 +1,6 @@
 import { Container } from "@pixi/display";
 import { TilingSprite } from "@pixi/sprite-tiling";
+import clearObject from "../helpers/clearObject";
 import createSprite from "../helpers/createSprite";
 
 /**
@@ -74,6 +75,13 @@ class BackgroundContainer extends Container {
      */
     stopFalling() {
         clearInterval(this.fallingInterval)
+    }
+
+    clear() {
+        this.stopFalling()
+        clearObject(this.fuelsArray)
+        clearObject(this.children)
+        this.destroy(true)
     }
 }
 

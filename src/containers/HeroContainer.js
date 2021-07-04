@@ -1,5 +1,6 @@
 import { Container } from "@pixi/display";
 import Hero from "../components/Hero";
+import clearObject from "../helpers/clearObject";
 import createSprite from "../helpers/createSprite";
 
 /**
@@ -48,6 +49,12 @@ class HeroContainer extends Container {
             this.addChildAt(bomb, 0)
             this.bombsArray.push(bomb)
         }
+    }
+
+    clear() {
+        clearObject(this.bombsArray)
+        clearObject(this.children)
+        this.destroy(true)
     }
 }
 

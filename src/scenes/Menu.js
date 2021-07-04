@@ -2,6 +2,7 @@ import { Scene } from "pixi-scenes";
 import createSprite from "../helpers/createSprite";
 import Button from "../components/Button";
 import { Container } from "@pixi/display";
+import clearObject from "../helpers/clearObject";
 
 export default class Menu extends Scene {
     init () {
@@ -39,6 +40,11 @@ export default class Menu extends Scene {
     }
 
     shutdown() {
+        clearObject(this.menuContainer.children)
         this.menuContainer.destroy(true)
+        this.background = null
+        this.buttonStart = null
+        this.buttonScore = null
+        this.destroy(true)
     }
 }
