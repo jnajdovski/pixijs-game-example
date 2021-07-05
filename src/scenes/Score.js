@@ -5,6 +5,9 @@ import createSprite from "../helpers/createSprite";
 import clearObject from "../helpers/clearObject";
 
 export default class Score extends Scene {
+    /**
+     * initializing Score scene and score container
+     */
     init () {
         this.highScoreArray = this.app.playerConfig.highScore
         this.centerX = this.app.screen.width / 2;
@@ -14,6 +17,9 @@ export default class Score extends Scene {
         this.initialize = true
     }
 
+    /**
+     * Drawing background, button and best 10 scores
+     */
     start() {
         if (!this.initialize) this.init()
         this.background = createSprite('score_background', this.centerX, this.centerY);
@@ -26,6 +32,9 @@ export default class Score extends Scene {
        this.showScores()
     }
 
+    /**
+     * drawing scores from the highScoreArray 
+     */
     showScores() {
         let offsetY = 0
         for(let [index, score] of this.highScoreArray.entries()) {
@@ -35,6 +44,13 @@ export default class Score extends Scene {
         }
     }
 
+    /**
+     * creating and returning Text object
+     * @param {String} message 
+     * @param {Number} x 
+     * @param {Number} y 
+     * @returns {Text}
+     */
     createText(message, x, y) {
         const text = new Text(message, {fontFamily : 'Arial', fontSize: 32, fill : 0xffffff, align : 'right', strokeThickness: 4})
         text.x = x
@@ -43,11 +59,17 @@ export default class Score extends Scene {
         return text
     }
 
+    /**
+     * starting Menu scene
+     */
     backToMenu(){
         this.shutdown()
         this.scenes.start('menu')
     }
 
+    /**
+     * destroying all elements
+     */
     shutdown() {
         this.initialize = false
         this.background = null

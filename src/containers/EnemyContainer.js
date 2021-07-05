@@ -5,7 +5,7 @@ import clearObject from "../helpers/clearObject";
 import createSprite from "../helpers/createSprite";
 
 /**
- * Displaying enemies 
+ * container for the enemies 
  */
 class EnemyContainer extends Container {
     constructor(centerX, centerY) {
@@ -41,6 +41,9 @@ class EnemyContainer extends Container {
         
     }
 
+    /**
+     * creating fire balls that falls on some interval
+     */
     createFireBalls() {
         const max = this.centerX * 2
         const min = 0
@@ -70,6 +73,9 @@ class EnemyContainer extends Container {
         clearInterval(this.dispatchFireBall)
     }
 
+    /**
+     * destroying all elements
+     */
     clear() {
         this.remove()
         clearObject(this.fireBallsArray)

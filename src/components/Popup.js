@@ -13,6 +13,10 @@ class Popup extends Sprite {
         this.onButtonClicked = new signals()
     }
 
+    /**
+     * creating message on the popup
+     * @param {String} message 
+     */
     show(message) {
         this.renderable = true
         let text = new Text(message, {fontFamily : 'Arial', fontSize: 34, fill : 0xffffff, align : 'center', strokeThickness: 4})
@@ -28,6 +32,9 @@ class Popup extends Sprite {
         this.addChild(button)
     }
 
+    /**
+     * destroying all elements
+     */
     remove() {
         clearObject(this.children)
         this.destroy(true)

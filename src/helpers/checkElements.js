@@ -1,14 +1,24 @@
-import { Application, Sprite } from "pixi.js";
+import { Sprite } from "pixi.js";
 import Enemy from "../components/Enemy";
 import Hero from "../components/Hero";
 
-
+/**
+ * creating bounds of the given sprites and check if they overlaps
+ * @param {Sprite} obj1 
+ * @param {Sprite} obj2 
+ * @returns 
+ */
 const checkCollision = (obj1, obj2) => {
     var ab = obj1.getBounds();
     var bb = obj2.getBounds();
     return ab.x + ab.width > bb.x && ab.x < bb.x + bb.width && ab.y + ab.height > bb.y && ab.y < bb.y + bb.height;
 }
 
+/**
+ * checking if element is out of the game screen
+ * @param {*} param0 
+ * @returns 
+ */
 const isOutOfGame = ({ x, y }) => {
     if ((x <= 0 || y <= 0) || (x >= 1280 || y >= 720)) {
         return true

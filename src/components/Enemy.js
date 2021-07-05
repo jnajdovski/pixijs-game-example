@@ -31,6 +31,12 @@ class Enemy extends Sprite {
         this.renderable = false
     }
 
+    /**
+     * reseting tank that is not used
+     * @param {number} x 
+     * @param {number} y 
+     * @param {Hero} hero 
+     */
     reset(x, y, hero) {
         this.x = x
         this.y = y

@@ -2,10 +2,16 @@ import { Scene } from "pixi-scenes";
 import * as PIXI from 'pixi.js'
 
 export default class Boot extends Scene {
+    /**
+     * initializing Boot scene
+     */
     init () {
         this.loader = new PIXI.Loader();
     }
 
+    /**
+     * starting the loading of the assets and setting player config
+     */
     start() {
         this.loadAssets();
         this.loader.load();

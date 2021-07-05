@@ -5,6 +5,9 @@ import { Container } from "@pixi/display";
 import clearObject from "../helpers/clearObject";
 
 export default class Menu extends Scene {
+    /**
+     * initializing Menu scene
+     */
     init () {
         this.centerX = this.app.screen.width / 2;
         this.centerY = this.app.screen.height / 2;
@@ -13,6 +16,9 @@ export default class Menu extends Scene {
         this.initialize = true
     }
 
+    /**
+     * drawing background and buttons
+     */
     start() {
         if (!this.initialize) this.init()
         this.background = createSprite('background', this.centerX, this.centerY);
@@ -27,18 +33,25 @@ export default class Menu extends Scene {
         this.menuContainer.addChild(this.buttonScore);
     }
 
+    /**
+     * starting Game scene
+     */
     startGame() {
-        this.app.playerConfig.fuel = 10
-        this.app.playerConfig.lives = 3
         this.shutdown()
         this.scenes.start('game')
     }
 
+    /**
+     * starting Score scene
+     */
     showScore() {
         this.shutdown()
         this.scenes.start('score')
     }
 
+    /**
+     * destroying all elements
+     */
     shutdown() {
         this.initialize = false
         this.background = null

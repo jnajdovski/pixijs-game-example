@@ -15,6 +15,9 @@ class BackgroundContainer extends Container {
         this.bgSpeed = 4
     }
 
+    /**
+     * drawing background layers
+     */
     draw() {
         this.bgSky =  this._setBackground('sky')
         this.bgMountains = this._setBackground('mountains')
@@ -67,7 +70,7 @@ class BackgroundContainer extends Container {
                 this.addChild(fuelTank)
                 this.fuelsArray.push(fuelTank)
             }
-        }, Math.floor(Math.random() * 15000) + 6000);
+        }, Math.floor(Math.random() * 12000) + 2000);
     }
 
     /**
@@ -77,6 +80,9 @@ class BackgroundContainer extends Container {
         clearInterval(this.fallingInterval)
     }
 
+    /**
+     * destroying all elements
+     */
     clear() {
         this.stopFalling()
         clearObject(this.fuelsArray)

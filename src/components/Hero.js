@@ -24,11 +24,18 @@ class Hero extends Sprite {
         .on('mousemove', this.onDragMove)
     }
 
+    /**
+     * calls when dragging is started
+     * @param {*} event 
+     */
     onDragStart(event) {
         this.data = event.data;
         this.dragging = true;
     }
 
+    /**
+     * calls when dragging is stoped
+     */
     onDragEnd() {
         this.dragging = false;
         this.data = null;
@@ -62,13 +69,6 @@ class Hero extends Sprite {
         setTimeout(() => {
             this.isActive = true
         }, 1200);
-    }
-
-    /**
-     * increments fuel of hero
-     */
-    addFuel() {
-        console.log('Fuel Added');
     }
 }
 

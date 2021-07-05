@@ -11,10 +11,11 @@ import signals from "signals";
 import Popup from "../components/Popup";
 import clearObject from "../helpers/clearObject";
 import saveGame from "../helpers/saveGame"
+import Hero from "../components/Hero";
 
 export default class Game extends Scene {
     /**
-     * creating instances of containers 
+     * initializing Game scene, setting containers and main signals
      */
     init() {
         this.centerX = this.app.screen.width / 2;
@@ -77,7 +78,7 @@ export default class Game extends Scene {
     }
 
     /**
-     * showing containers
+     * drawing elements of containers
      */
     start() {
         if (!this.initialize) this.init()
@@ -91,12 +92,16 @@ export default class Game extends Scene {
         this.decreaseHeroFuel(hero)
     }
 
+    /**
+     * decreasing heros fuel points by interval
+     * @param {Hero} hero 
+     */
     decreaseHeroFuel(hero) {
         this.fuelInterval = setInterval(() => {
             if (hero.isActive) {
                 this.app.onFuelTaken.dispatch(-1)
             }
-        }, 1150);
+        }, 1500);
     }
 
     /**
@@ -143,7 +148,12 @@ export default class Game extends Scene {
         this.addChild(anim)
     }
 
+    /**
+     * creating Game over Popup and destroying the scene
+     */
     gameOver() {
+        this.app.playerConfig.fuel = 10
+        this.app.playerConfig.lives = 3
         clearInterval(this.fuelInterval)
         this.gameFinished = true
         saveGame(this.app.playerConfig)
@@ -153,6 +163,9 @@ export default class Game extends Scene {
         this.finishPopup.onButtonClicked.add(this.shutdown, this)
     }
     
+    /**
+     * updating elements of the scene
+     */
     update() {
         if (!this.gameFinished) {
             this.updateElements()
@@ -160,6 +173,9 @@ export default class Game extends Scene {
         }
     }
 
+     /**
+     * destroying all elements of the scene
+     */
     shutdown() {
         this.initialize = false
         this.backgroundContainer.clear()

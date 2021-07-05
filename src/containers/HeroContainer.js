@@ -51,6 +51,9 @@ class HeroContainer extends Container {
         }
     }
 
+     /**
+     * destroying all elements
+     */
     clear() {
         clearObject(this.bombsArray)
         clearObject(this.children)
